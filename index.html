@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashback</title>
+</head>
+<body>
+    
+<h2>Calcular Cashback</h2>
+
+<input type="number" id="valor" placeholder="Valor da compra"><br><br>
+<input type="number" id="desconto" placeholder="Desconto (%)"><br><br>
+
+<select id="tipo">
+    <option value="normal">Normal</option>
+    <option value="vip">VIP</option>
+</select><br><br>
+
+<button onclick="calcular()">Calcular</button>
+
+<h3 id="resultado"></h3>
+
+<h3>Histórico</h3>
+<ul id="historico"></ul>
+
+<script>
+async function calcular() {
+    const valor = document.getElementById("valor").value;
+    const desconto = document.getElementById("desconto").value;
+    const tipo = document.getElementById("tipo").value;
+
+    const resposta = await fetch("http://127.0.0.1:5000/calcular", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            valor: valor,
+            desconto: desconto,
+            tipo: tipo
+        })
+    });
+
+    const dados = await resposta.json();
+
+    document.getElementById("resultado").innerText =
+        "Cashback: R$ " + dados.cashback;
+
+    carregarHistorico();
+}
+
+async function carregarHistorico() {
+    const resposta = await fetch("http://127.0.0.1:5000/historico");
+    const dados = await resposta.json();
+
+    const lista = document.getElementById("historico");
+    lista.innerHTML = "";
+
+    dados.forEach(item => {
+        const li = document.createElement("li");
+        li.innerText =
+            "Tipo: " + item[0] +
+            " | Valor: " + item[1] +
+            " | Cashback: " + item[2];
+
+        lista.appendChild(li);
+    });
+}
+</script>
+
+</body>
+</html>
