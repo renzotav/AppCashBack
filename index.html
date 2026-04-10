@@ -30,7 +30,7 @@ async function calcular() {
     const desconto = document.getElementById("desconto").value;
     const tipo = document.getElementById("tipo").value;
 
-    const resposta = await fetch("appcashback-production.up.railway.app/calcular", {
+    const resposta = await fetch("https://appcashback-production.up.railway.app/calcular", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -51,7 +51,7 @@ async function calcular() {
 }
 
 async function carregarHistorico() {
-    const resposta = await fetch("appcashback-production.up.railway.app/historico");
+    const resposta = await fetch("https://appcashback-production.up.railway.app/historico");
     const dados = await resposta.json();
 
     const lista = document.getElementById("historico");
