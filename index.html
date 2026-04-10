@@ -30,7 +30,7 @@ async function calcular() {
     const desconto = document.getElementById("desconto").value;
     const tipo = document.getElementById("tipo").value;
 
-    const resposta = await fetch("http://127.0.0.1:5000/calcular", {
+    const resposta = await fetch("appcashback-production.up.railway.app", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
