@@ -34,7 +34,7 @@ def calcular():
       valor = float(data["valor"])
       desconto = float(data["desconto"])
       tipo = data["tipo"]
-      ip = request.remote_addr
+      ip = request.headers.get("X-Forwarded-For", request.remote_addr)
 
       cashback = calcular_cashback(valor, desconto, tipo)
 
@@ -49,7 +49,7 @@ def calcular():
 
 @app.route("/historico", methods=["GET"])
 def historico():
-      ip = request.remote_addr
+      ip = request.headers.get("X-Forwarded-For", request.remote_addr)
       cursor = conn.cursor()
       cursor.execute("SELECT tipo, valor, cashback FROM consultas WHERE ip = %s", (ip,))
       dados = cursor.fetchall()
